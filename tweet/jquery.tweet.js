@@ -27,6 +27,7 @@
       auto_join_text_url: "I was looking at",   // [string]   auto tense for urls: "I was looking at" http:...
       loading_text: null,                       // [string]   optional loading text, displayed while tweets load
       refresh_interval: null,                   // [integer]  optional number of seconds after which to reload tweets
+      custom_json: null, 			// [string]   custom JSON file if using a cron job or other implementation
       twitter_url: "twitter.com",               // [string]   custom twitter url, if any (apigee, etc.)
       twitter_api_url: "api.twitter.com",       // [string]   custom twitter api url, if any (apigee, etc.)
       twitter_search_url: "search.twitter.com", // [string]   custom twitter search url, if any (apigee, etc.)
@@ -146,7 +147,9 @@
       var proto = ('https:' == document.location.protocol ? 'https:' : 'http:');
       var count = (s.fetch === null) ? s.count : s.fetch;
       var common_params = '&include_entities=1&callback=?';
-      if (s.list) {
+      if (s.custom_json) {
+        return s.custom_json;
+      } else if (s.list) {
         return proto+"//"+s.twitter_api_url+"/1/"+s.username[0]+"/lists/"+s.list+"/statuses.json?page="+s.page+"&per_page="+count+common_params;
       } else if (s.favorites) {
         return proto+"//"+s.twitter_api_url+"/favorites/"+s.username[0]+".json?page="+s.page+"&count="+count+common_params;
